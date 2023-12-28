@@ -11,7 +11,14 @@ jobs:
 
   - script: |
       docker build -t my-cc-app .
-      docker tag my-cc-app arf21.jfrog.io/arf-docker/my-cc-app:latest:v2
+    displayName: 'Build Docker Image'
+    
+  - script: |
+      docker tag my-cc-app arf21.jfrog.io/arf-docker/my-cc-app:v2
       docker login arf21.jfrog.io -u arfaat.tamboli@unisys.com -p AKCpBrvb13G9vALPp3rV4hrzfzBQ4jeFys9YeHdxw7iwmeJRNLat9y3jm6H4MJfcxo8qADTZ6
-      docker push arf21.jfrog.io/arf-docker/my-cc-app:latest:v2
-    displayName: 'Build and Push Docker Image'
+    displayName: 'Authenticate Login'
+    
+  - script: |
+      docker push arf21.jfrog.io/arf-docker/my-cc-app:v2
+    displayName: 'Push Docker Image'
+    
