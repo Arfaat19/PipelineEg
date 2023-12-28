@@ -2,7 +2,7 @@ trigger:
 - main  # Adjust the branch name as needed
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 jobs:
 - job: BuildAndPushDockerImage
@@ -10,15 +10,15 @@ jobs:
   steps:
   - checkout: self
 
-  # - task: UseDotNet@2
-  #   inputs:
-  #     packageType: 'runtime'
-  #     version: '3.11.x'
-  #     installationPath: $(Agent.ToolsDirectory)/dotnet
-
   - script: |
       docker build -t my-cc-app .
       docker tag my-cc-app arf21.jfrog.io/arf-docker/my-cc-app:latest
       docker login arf21.jfrog.io -u arfaat.tamboli@unisys.com -p AKCpBrvb13G9vALPp3rV4hrzfzBQ4jeFys9YeHdxw7iwmeJRNLat9y3jm6H4MJfcxo8qADTZ6
       docker push arf21.jfrog.io/arf-docker/my-cc-app:latest
-    displayName: 'Build and Push Docker Image'
+    displayName: 'Build Docker Image'
+  
+  - script: |
+      docker tag my-cc-app arf21.jfrog.io/arf-docker/my-cc-app:latest
+      docker login arf21.jfrog.io -u arfaat.tamboli@unisys.com -p AKCpBrvb13G9vALPp3rV4hrzfzBQ4jeFys9YeHdxw7iwmeJRNLat9y3jm6H4MJfcxo8qADTZ6
+      docker push arf21.jfrog.io/arf-docker/my-cc-app:latest
+    displayName: 'Push Docker Image'
