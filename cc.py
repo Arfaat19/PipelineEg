@@ -206,7 +206,7 @@ def function1():
         toC = toC.upper()
         qty = float(round(int(qty), 2))
         amount = round(qty * fx[toC] / fx[fromC], 2)
-        print(f"{qty} of currency {fromC} amounts to {amount} of currency {toC} today")
+        print(f"The amount {qty} {fromC} is equal to {amount} {toC} today")
 
 
 try:
