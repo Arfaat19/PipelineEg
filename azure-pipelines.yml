@@ -10,11 +10,11 @@ jobs:
   steps:
   - checkout: self
 
-  - task: UseDotNet@2
-    inputs:
-      packageType: 'runtime'
-      version: '3.11.2'
-      installationPath: $(Agent.ToolsDirectory)/dotnet
+  # - task: UseDotNet@2
+  #   inputs:
+  #     packageType: 'runtime'
+  #     version: '3.11.x'
+  #     installationPath: $(Agent.ToolsDirectory)/dotnet
 
   - script: |
       docker build -t my-cc-app .
