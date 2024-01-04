@@ -2,6 +2,7 @@ trigger:
 - main 
 
 pool: Self
+# vmImage: 'windows-latest'
 
 jobs:
 - job: BuildAndPushDockerImage
