@@ -11,7 +11,7 @@ jobs:
   - checkout: self
 
   - script: |
-      docker build -t my-cc-app .
+      docker bild -t my-cc-app .
     displayName: 'Build Docker Image'
     
   - script: |
@@ -22,4 +22,8 @@ jobs:
   - script: |
       docker push arf21.jfrog.io/arf-docker/my-cc-app:v4
     displayName: 'Push Docker Image'
-    
+  - task: CreateBug@2
+    inputs:
+      isyamlpipeline: true
+      custompaths: false
+      customrequestor: false
