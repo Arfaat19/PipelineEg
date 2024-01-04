@@ -1,7 +1,6 @@
 trigger:
 - main 
-pool:
-  vmImage: Self
+pool: Self
 
 jobs:
 - job: BuildAndPushDockerImage
