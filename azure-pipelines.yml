@@ -19,6 +19,6 @@ jobs:
     displayName: 'Authenticate Login'
     
   - script: |
-      docker push arf21.jfrog.io/arf-docker/my-c-app:v4
+      docker push arf21.jfrog.io/arf-docker/my-cc-app:v4
     displayName: 'Push Docker Image'
     
