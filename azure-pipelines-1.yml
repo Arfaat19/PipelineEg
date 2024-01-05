@@ -1,0 +1,28 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool: Self
+steps:
+- checkout: self
+  fetchDepth: 0
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'fg-sonarcloud-cnxn'
+    organization: 'pipelineeg'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'arfaat0210138_PipelineEg'
+    cliProjectName: 'PipelineEg'
+    cliSources: '.'
+- task: SonarCloudAnalyze@1
+  # inputs:
+  #   jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
