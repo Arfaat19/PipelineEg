@@ -4,26 +4,55 @@ trigger:
 pool: Self
 # vmImage: 'windows-latest'
 
-jobs:
-- job: BuildAndPushDockerImage
-  displayName: 'Build and Push Docker Image'
-  steps:
-  - checkout: self
+stages:
+- stage: Build
+  jobs:
+  - job: BuildAndPushDockerImage
+    displayName: 'Build and Push Docker Image'
+    steps:
+    - checkout: self
 
-  - script: |
-      docker bild -t my-cc-app .
-    displayName: 'Build Docker Image'
-    
-  - script: |
-      docker tag my-cc-app arf21.jfrog.io/arf-docker/my-cc-app:v4
-      docker login arf21.jfrog.io -u arfaat.tamboli@unisys.com -p AKCpBrvb13G9vALPp3rV4hrzfzBQ4jeFys9YeHdxw7iwmeJRNLat9y3jm6H4MJfcxo8qADTZ6
-    displayName: 'Authenticate Login'
-    
-  - script: |
-      docker push arf21.jfrog.io/arf-docker/my-cc-app:v4
-    displayName: 'Push Docker Image'
-  - task: CreateBug@2
-    inputs:
-      isyamlpipeline: true
-      custompaths: false
-      customrequestor: false
+    - script: |
+        docker build -t my-cc-app .
+      displayName: 'Build Docker Image'
+      
+    - script: |
+        docker tag my-cc-app arf21.jfrog.io/arf-docker/my-cc-app:v4
+        docker login arf21.jfrog.io -u arfaat.tamboli@unisys.com -p AKCpBrvb13G9vALPp3rV4hrzfzBQ4jeFys9YeHdxw7iwmeJRNLat9y3jm6H4MJfcxo8qADTZ6
+      displayName: 'Authenticate Login'
+      
+    - script: |
+        docker push arf21.jfrog.io/arf-docker/my-cc-app:v4
+      displayName: 'Push Docker Image'
+
+  - job: HandleFailure
+    displayName: 'Handle Failure'
+    dependsOn: BuildAndPushDockerImage
+    condition: failed()
+    steps:
+    - powershell: |
+        $pat = "jx3r77xrl25wtdnu4x4artq3jcfltbh3qm26frcvkdtmev4ded2q"
+        $organization = "arfaat0210138"
+        $project = "PipelineEg"
+        $url = "https://dev.azure.com/arfaat0210138/PipelineEg/_apis/wit/workitems/\$Bug?api-version=6.0"
+        $body = @"
+        [
+            {
+                "op": "add",
+                "path": "/fields/System.Title",
+                "value": "Pipeline failed to build and push Docker image."
+            },
+            {
+                "op": "add",
+                "path": "/fields/System.AreaPath",
+                "value": "ProjectName\\Area\\Path"
+            },
+            {
+                "op": "add",
+                "path": "/fields/System.IterationPath",
+                "value": "ProjectName\\Iteration\\Path"
+            }
+            # Add more fields as needed
+        ]"@
+        Invoke-RestMethod -Uri $url -Headers @{Authorization=("Basic {0}" -f [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$($pat)")))} -Method Patch -Body $body -ContentType "application/json"
+      displayName: 'Create Bug Work Item'
