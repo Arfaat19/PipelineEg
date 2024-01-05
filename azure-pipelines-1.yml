@@ -7,6 +7,7 @@ trigger:
 - master
 
 pool: Self
+
 steps:
 - checkout: self
   fetchDepth: 0
