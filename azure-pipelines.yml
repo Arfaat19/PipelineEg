@@ -24,24 +24,11 @@ stages:
     - script: |
         docker push arf21.jfrog.io/arf-docker/my-cc-app:v4
       displayName: 'Push Docker Image'
-
-  - job: HandleFailure
-    displayName: 'Handle Failure'
-    dependsOn: BuildAndPushDockerImage
-    condition: failed()
-    steps:
-    - powershell: |
-        $pat = "jx3r77xrl25wtdnu4x4artq3jcfltbh3qm26frcvkdtmev4ded2q"
-        $organization = "arfaat0210138"
-        $project = "PipelineEg"
-        $url = "https://dev.azure.com/arfaat0210138/PipelineEg/_apis/wit/workitems/\$Bug?api-version=6.0"
-        $body = "
-        [
-            {
-                "op": "add",
-                "path": "/fields/System.Title",
-                "value": "Pipeline failed to build and push Docker image."
-            }
-        ]"
-        Invoke-RestMethod -Uri $url -Headers @{Authorization=("Basic {0}" -f [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$($pat)")))} -Method Patch -Body $body -ContentType "application/json"
-      displayName: 'Create Bug Work Item'
+    - task: CreateBug@2
+      inputs:
+        isyamlpipeline: true
+        custompaths: true
+        areapath: 'PipelineEg'
+        iterationpath: 'PipelineEg\Sprint 1'
+        customrequestor: false
+      condition: failed()
