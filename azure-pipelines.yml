@@ -30,7 +30,8 @@ stages:
         custompaths: true
         areapath: 'PipelineEg'
         iterationpath: 'PipelineEg\Sprint 1'
-        customrequestor: false
+        customrequestor: true
+        customrequestorid: 'arfaat021@gmail.com'
       condition: failed()
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
