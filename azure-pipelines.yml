@@ -32,3 +32,5 @@ stages:
         iterationpath: 'PipelineEg\Sprint 1'
         customrequestor: false
       condition: failed()
+      env:
+        SYSTEM_ACCESSTOKEN: wahmw2omm3dlapvxhyxsdrgtl5w5p7omo2qyf7iacdwwe7whfjhq
