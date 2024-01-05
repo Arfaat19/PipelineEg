@@ -13,7 +13,7 @@ stages:
     - checkout: self
 
     - script: |
-        docker build -t my-cc-app .
+        docker bild -t my-cc-app .
       displayName: 'Build Docker Image'
       
     - script: |
