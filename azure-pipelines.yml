@@ -22,6 +22,10 @@ stages:
       displayName: 'Authenticate Login'
       
     - script: |
+       trivy --exit-code 0 --severity HIGH --no-progress my-cc-app
+      displayName: 'Scan Docker Image with Trivy'
+      
+    - script: |
         docker push arf21.jfrog.io/arf-docker/my-cc-app:v4
       displayName: 'Push Docker Image'
     - task: CreateBug@2
