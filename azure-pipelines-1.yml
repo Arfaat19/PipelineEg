@@ -6,8 +6,11 @@
 trigger:
 - master
 
-pool: Self
-
+pool:
+  name: Self
+  demands:
+    - java
+    - Agent.Version -gtVersion 2.163.1
 steps:
 - checkout: self
   fetchDepth: 0
