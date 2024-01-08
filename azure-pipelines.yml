@@ -19,7 +19,7 @@ stages:
     #   displayName: 'Install Trivy'
 
     - script: |
-        docker bild -t my-cc-app .
+        docker build -t my-cc-app .
       displayName: 'Build Docker Image'
       
     - script: |
