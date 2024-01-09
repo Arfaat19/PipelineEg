@@ -13,9 +13,10 @@ stages:
     - checkout: self
 
     - script: |
-        wget https://github.com/aquasecurity/trivy/releases/download/v0.20.1/trivy_0.20.1_Linux-64bit.tar.gz
-        tar zxvf trivy_0.20.1_Linux-64bit.tar.gz
-        mv trivy /usr/local/bin/
+        # Download Trivy
+        Invoke-WebRequest -Uri https://github.com/aquasecurity/trivy/releases/download/v0.20.1/trivy_0.20.1_Windows-64bit.zip -OutFile trivy.zip
+        Expand-Archive -Path trivy.zip -DestinationPath C:\Trivy -Force
+        Remove-Item trivy.zip
       displayName: 'Install Trivy'
 
     - script: |
