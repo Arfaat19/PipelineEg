@@ -30,14 +30,14 @@ stages:
       
     - script: |
         # Scan Docker image with Trivy
-        trivy --severity HIGH --no-progress my-cc-app
-        # Capture the exit code and store it in a variable
-        $trivyExitCode = $LASTEXITCODE
+        trivy image --severity HIGH --no-progress my-cc-app
+        SET trivyExitCode=%ERRORLEVEL%
+        REM Check if vulnerabilities were found and fail the build accordingly        
         # Check if vulnerabilities were found and fail the build accordingly
-        if ($trivyExitCode -ne 0) {
-          Write-Host "Trivy found vulnerabilities. Exiting with code $trivyExitCode."
-          exit $trivyExitCode
-        }      
+        IF %trivyExitCode% NEQ 0 (
+        ECHO Trivy found vulnerabilities. Exiting with code %trivyExitCode%.
+        EXIT /B %trivyExitCode%
+        )     
         displayName: 'Scan Docker Image with Trivy'
       
     - script: |
