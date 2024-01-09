@@ -29,8 +29,16 @@ stages:
       displayName: 'Authenticate Login'
       
     - script: |
-       trivy --exit-code 0 --severity HIGH --no-progress my-cc-app
-      displayName: 'Scan Docker Image with Trivy'
+        # Scan Docker image with Trivy
+        trivy --severity HIGH --no-progress my-cc-app
+        # Capture the exit code and store it in a variable
+        $trivyExitCode = $LASTEXITCODE
+        # Check if vulnerabilities were found and fail the build accordingly
+        if ($trivyExitCode -ne 0) {
+          Write-Host "Trivy found vulnerabilities. Exiting with code $trivyExitCode."
+          exit $trivyExitCode
+        }      
+        displayName: 'Scan Docker Image with Trivy'
       
     - script: |
         docker push arf21.jfrog.io/arf-docker/my-cc-app:v4
