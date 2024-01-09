@@ -38,7 +38,7 @@ stages:
         ECHO Trivy found vulnerabilities. Exiting with code %trivyExitCode%.
         EXIT /B %trivyExitCode%
         )     
-        displayName: 'Scan Docker Image with Trivy'
+      displayName: 'Scan Docker Image with Trivy'
       
     - script: |
         docker push arf21.jfrog.io/arf-docker/my-cc-app:v4
