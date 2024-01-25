@@ -20,7 +20,7 @@ stages:
     #   displayName: 'Install Trivy'
 
     - script: |
-        docker build -t my-cc-app .
+        docker bild -t my-cc-app .
       displayName: 'Build Docker Image'
       
     - script: |
@@ -36,14 +36,21 @@ stages:
     - script: |
         docker push arf21.jfrog.io/arf-docker/my-cc-app:v4
       displayName: 'Push Docker Image'
-    - task: CreateBug@2
+    # - task: CreateBug@2
+    #   inputs:
+    #     isyamlpipeline: true
+    #     custompaths: true
+    #     areapath: 'PipelineEg'
+    #     iterationpath: 'PipelineEg\Sprint 1'
+    #     customrequestor: true
+    #     customrequestorid: 'arfaat021@gmail.com'
+    #   condition: failed()
+    #   env:
+    #     SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+    - task: CreateWorkItem@2
       inputs:
-        isyamlpipeline: true
-        custompaths: true
-        areapath: 'PipelineEg'
-        iterationpath: 'PipelineEg\Sprint 1'
-        customrequestor: true
-        customrequestorid: 'arfaat021@gmail.com'
-      condition: failed()
-      env:
-        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        workItemType: 'Bug'
+        title: 'Pipeline Failure : Error'
+        areaPath: 'PipelineEg'
+        iterationPath: 'PipelineEg\Sprint 1'
+        authType: 'internal'
