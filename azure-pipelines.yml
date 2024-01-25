@@ -54,3 +54,4 @@ stages:
         areaPath: 'PipelineEg'
         iterationPath: 'PipelineEg\Sprint 1'
         authType: 'internal'
+      condition: failed()
